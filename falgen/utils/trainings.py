@@ -28,6 +28,20 @@ def typical_setup():
     torch.backends.cudnn.benchmark = True
 
 
+def count_parameters(model):
+    """Count the number of parameters in a model.
+
+    Args:
+        model: A PyTorch nn.Module.
+
+    Returns:
+        Dictionary with "total", "trainable", and "frozen" counts (integers).
+    """
+    total = sum(p.numel() for p in model.parameters())
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    return {"total": total, "trainable": trainable, "frozen": total - trainable}
+
+
 
 def forward_with_activation_hooks(model, **kwargs):
     activations = {}
